@@ -1,0 +1,85 @@
+stationCode,stationName,Distance_km,Platforms,Approx_Platform_Length_&_Coach_Capacity,Data_Confidence,latitude,longitude,Matched_Address
+MAS,MGR Chennai Central,0,12,"Mixed: main PFs ~650m (24-coach), older bay PFs shorter (~9-12 coach)",Verified,12.9916554,80.2473223,"Central Park Childrens play area, MGR Film City Road, CMWSSB Division 180, Ward 180, Zone 13 Adyar, Chennai Corporation, Chennai, Tamil Nadu, 600113, India"
+BBQ,Basin Bridge Jn,2.14,7,"~500-550m (18-20 coach), through-yard station",Verified,,,
+VPY,Vyasarpadi Jeeva,3.43,2,~400-450m (14-16 coach),Estimated (category default),13.1091961,80.2572195,"Vyasarpadi Jeeva, Stephenson Road, CMWSSB Division 70, Perambur, Ward 70, Zone 6 Thiru. Vi. Ka. Nagar, Chennai Corporation, Chennai, Tamil Nadu, 600011, India"
+VJM,Vyasarpadi Jn,4.13,3,~500-550m (18-20 coach),Estimated (category default),,,
+PER,Perambur,5.47,4,"PF1 & PF4 ~660m (24-coach); PF2 & PF3 ~250m (9-coach), being extended",Verified,13.1082594,80.2515158,"Perambur Railway Station, Perambur, Ward 70, Zone 6 Thiru. Vi. Ka. Nagar, Chennai Corporation, Chennai, Tamil Nadu, India"
+PCW,Perambur Carriage Works,6.09,1,~300-400m (10-12 coach),Estimated (category default),13.1072814,80.2388864,"Perambur Carriage Works, ICF Road, CMWSSB Division 69, Ward 96, Ward 69, Zone 6 Thiru. Vi. Ka. Nagar, Chennai Corporation, Chennai, Tamil Nadu, 600011, India"
+PEW,Perambur Loco Works,7.52,1,~300-400m (10-12 coach),Estimated (category default),13.1082433,80.2257161,"Perambur Loco Works Railway Station, Ward 96, Zone 8 Anna Nagar, Chennai Corporation, Chennai, Tamil Nadu, India"
+XX-ICF,Integral Coach Factory,8.29,1,~300-400m (10-12 coach),Estimated (category default),13.0980993,80.2076383,"Integral Coach Factory, Ward 100, Zone 8 Anna Nagar, Chennai Corporation, Chennai, Tamil Nadu, 600038, India"
+VLK,Villivakkam,9.34,4,"~450-500m (16-18 coach), suburban EMU station",Verified,13.11031,80.2091561,"Villivakkam, Akbar Square 3rd Street, CMWSSB Division 65, Villivakkam, Ward 65, Zone 6 Thiru. Vi. Ka. Nagar, Chennai Corporation, Chennai, Tamil Nadu, 600049, India"
+KOTR,Korattur,12.09,2,~400-450m (14-16 coach),Estimated (category default),13.1131424,80.1841521,"Korattur, Walkway for Pedestrians and two wheelers, CMWSSB Division 83, Ward 83, Zone 7 Ambattur, Chennai Corporation, Ambattur, Thiruvallur, Tamil Nadu, 600080, India"
+PVM,Pattaravakkam,14,2,~400-450m (14-16 coach),Estimated (category default),13.1143904,80.1663975,"Pattaravakkam, Railway Station Road, CMWSSB Division 84, Ward 84, Zone 7 Ambattur, Athipet, Chennai Corporation, Ambattur, Thiruvallur, Tamil Nadu, 600053, India"
+ABU,Ambattur,15.47,2,~400-450m (14-16 coach),Estimated (category default),13.1140244,80.1528611,"Ambattur, Railway Foot Over Bridge, CMWSSB Division 85, Ward 85, Zone 7 Ambattur, Chennai Corporation, Ambattur, Thiruvallur, Tamil Nadu, 600053, India"
+TMVL,Tirumullaivoyal,17.18,2,~400-450m (14-16 coach),Estimated (category default),13.1217195,80.1245049,"60 Feet Road Annanur Railway Station Road, Vaishnavi Nagar, Thiruvengada Nagar, Nesamani Nagar, Ambattur, Thiruvallur, Tamil Nadu, 600109, India"
+ANNR,Annanur,18.27,2,~400-450m (14-16 coach),Estimated (category default),13.1163563,80.1269127,"Annanur, 60 Feet Road Annanur Railway Station Road, Vaishnavi Nagar, Thiruvengada Nagar, Nesamani Nagar, Ambattur, Thiruvallur, Tamil Nadu, 600109, India"
+AVD,Avadi,21,3,~500-600m (18-22 coach),Estimated (category default),13.1182744,80.1015427,"Avadi, Poonamallee - Avadi Road, Sekkadu, Avadi, Poonamallee, Thiruvallur, Tamil Nadu, 600054, India"
+HC,Hindu College,23.91,2,~400-450m (14-16 coach),Estimated (category default),13.1186469,80.0752177,"Hindu college railway Station, Gopalapuram Main Road, Pattabiram, Avadi, Poonamallee, Thiruvallur, Tamil Nadu, 600054, India"
+PAB,Pattabiram,24.91,2,~400-450m (14-16 coach),Estimated (category default),13.1460141,80.0686194,"Pattabiram E Depot, Mittanamallee - Palavedu - Alathur Road, Palavedu, Ambattur, Thiruvallur, Tamil Nadu, 600055, India"
+NEC,Nemilicherry,27.15,2,~400-450m (14-16 coach),Estimated (category default),13.1217022,80.0437559,"Nemilicherry, Sivagami Nagar, Nemilicheri, Avadi, Poonamallee, Thiruvallur, Tamil Nadu, 600054, India"
+TI,Tiruninravur,28.99,3,~500-600m (18-22 coach),Estimated (category default),13.123994,80.0297436,"Tiruninravur, Chennai - Tiruttani - Renigunta Road, Nemilicheri, Avadi, Poonamallee, Thiruvallur, Tamil Nadu, 600054, India"
+VEU,Veppampattu,32.3,2,~400-450m (14-16 coach),Estimated (category default),13.1235994,79.9984223,"Veppampattu, Veppampattu Overbridge, Veppambaattu, Thiruvallur, Tamil Nadu, 602024, India"
+SVR,Sevvapet Road,35.74,2,~400-450m (14-16 coach),Estimated (category default),13.1252677,79.9660618,"Sevvapet Road, Thirur - Sevvapet - Keelanur Road, Sevvapet, Tirur, Thiruvallur, Tamil Nadu, 602025, India"
+PTLR,Putlur Halt,38.88,1,~300-350m (10-12 coach),Estimated (category default),,,
+TRL,Tiruvallur,41.62,6,"~660m (24-coach), terminal/originating EMU station",Verified,13.1161924,79.9121601,"Tiruvallur, J. N. Road, Tiruvallur, Thiruvallur, Tamil Nadu, 602001, India"
+EGT,Egattur Halt,44.88,1,~300-350m (10-12 coach),Estimated (category default),,,
+KBT,Kadambattur,47.29,2,~400-450m (14-16 coach),Estimated (category default),13.0998547,79.8631466,"Kadambattur, Thirupachur - Kadambattur - Kondancheri Road, Kadambattur, Thiruvallur, Tamil Nadu, 631203, India"
+SPAM,Spic Nagar,50.34,2,~400-450m (14-16 coach),Estimated (category default),12.9749173,80.2208448,"State Bank of India, Taramani Road, CMWSSB Division 179, Ward 179, Zone 13 Adyar, Chennai Corporation, Chennai, Tamil Nadu, 600042, India"
+MAF,Manavur,54.06,2,~400-450m (14-16 coach),Estimated (category default),13.096372,79.8012593,"Manavur, Manavur RS - Thiruvalangadu Road, Thiruvelangadu, Tiruttani, Thiruvallur, Tamil Nadu, India"
+TO,Tiruvalangadu,58.21,2,~400-450m (14-16 coach),Estimated (category default),13.0901816,79.7637664,"Tiruvalangadu, Kanakammachattiram - Thakkolam Road, Tiruttani, Thiruvallur, Tamil Nadu, India"
+MSU,Mosur,63.82,2,~400-450m (14-16 coach),Estimated (category default),13.0849374,79.7122361,"Mosur, Chinna Mosur Road, Mosur, Arakonam, Ranipet, Tamil Nadu, 631002, India"
+PLMG,Puliyamangalam,66.76,2,~400-450m (14-16 coach),Estimated (category default),13.0834033,79.6849792,"Puliyamangalam, Tiruvallur - Arakkonam Road, Thiruvelangadu, Arakonam, Ranipet, Tamil Nadu, 631001, India"
+AJLS,Arakkonam Jn (Sub),67.35,3,~500-550m (18-20 coach),Estimated (category default),,,
+AJJ,Arakkonam Junction,68.6,8,~650-700m on main PFs (24-coach); PF6-8 shorter,Verified,13.0823386,79.6685253,"Arakkonam Junction, Sadras - Chengalpattu - Kancheepuram - Arakkonam - Tiruthani Road, Arakkonam, Arakonam, Ranipet, Tamil Nadu, 631001, India"
+MLPM,Melpattam,71.3,2,~400-450m (14-16 coach),Estimated (category default),,,
+CTRE,Chitteri,76.43,2,~400-450m (14-16 coach),Estimated (category default),13.0679482,79.5981218,"Chitteri, Chitteri Road, Arakonam, Ranipet, Tamil Nadu, 632502, India"
+AVN,Anavardikhanpet,80.31,2,~400-450m (14-16 coach),Estimated (category default),,,
+MDVE,Mambalam,86.57,2,~400-450m (14-16 coach),Estimated (category default),13.0380662,80.2277752,"Mambalam, Babu Rajendra Prasad 2nd street, CMWSSB Division 136, Ward 136, Zone 10 Kodambakkam, Chennai Corporation, Chennai, Tamil Nadu, 600033, India"
+SHU,Sholinghur,90.04,3,~500-600m (18-22 coach),Estimated (category default),13.0141131,79.4867622,"Sholinghur, Sholinghur - Kaveripakkam Road, Banavaram, Arakonam, Ranipet, Tamil Nadu, 632505, India"
+TUG,Thalangai,97.12,2,~400-450m (14-16 coach),Estimated (category default),13.0085969,79.4470398,"Thalangai, Thalangai - Thalangai RS Road, Wallajah, Ranipet, Tamil Nadu, 632505, India"
+MRLM,Marudhalam,99.63,2,~400-450m (14-16 coach),Estimated (category default),,,
+WJR,Walajah Road,104.99,2,~400-450m (14-16 coach),Estimated (category default),12.9478883,79.3610578,"Walajah Railway Station Road, Walajapet, Wallajah, Ranipet, Tamil Nadu, 632513, India"
+MCN,Mukundarayapuram,112.76,2,~400-450m (14-16 coach),Estimated (category default),12.9782491,79.2892009,"Mukundarayapuram, BHEL Feeder Road, Sipcot, Lalapet, Wallajah, Ranipet, Tamil Nadu, 632406, India"
+THL,Tindivanam,117.68,2,~400-450m (14-16 coach),Estimated (category default),12.2291653,79.6514192,"Tindivanam Railway Station (TMV), Rajaji Street, Tindivanam, Viluppuram, Tamil Nadu, 604001, India"
+SVUR,Sevur,123.84,2,~400-450m (14-16 coach),Estimated (category default),12.9718001,79.1901017,"Sevur, Tiruvalam - Katpadi - Venkatagirikottah Road, Brammapuram, Katpadi, Vellore, Tamil Nadu, 632106, India"
+KPD,Katpadi Junction,129.57,5,"~600-650m (22-24 coach), major junction",Verified,12.9721529,79.1376369,"Katpadi Junction, NH75, Dharapadavedu, Katpadi, Vellore, Tamil Nadu, 632007, India"
+LTI,Latteri,137.4,2,~400-450m (14-16 coach),Estimated (category default),12.967043,79.0662384,"Latteri, Thirumani - Olaiyathur Road, Latteri, Katpadi, Vellore, Tamil Nadu, 632202, India"
+VJ,Vellore Jn,141.51,3,~500-550m (18-20 coach),Estimated (category default),,,
+KVN,Kavanur,148.08,2,~400-450m (14-16 coach),Estimated (category default),12.949054,78.9697816,"Kavanur, Kavanur - RUSHA Hospital - Pasumathur Road, Kavanur, Katpadi, Vellore, Tamil Nadu, 632201, India"
+GYM,Gudiyattam,154.15,3,~500-600m (18-22 coach),Estimated (category default),12.9372959,78.9143466,"Gudiyattam, Rajakoil - Sethuvandai - Gudiyatham R.S. Road, Katpadi, Vellore, Tamil Nadu, 635803, India"
+MEH,Melalathur,158.98,2,~400-450m (14-16 coach),Estimated (category default),,,
+VLT,Valathur,164.03,2,~400-450m (14-16 coach),Estimated (category default),9.3492561,78.9234198,"Valathur, Valantaravai, Ramanathapuram, Tamil Nadu, India"
+MPI,Melpatti,170.02,2,~400-450m (14-16 coach),Estimated (category default),12.8583448,78.795185,"Melpatti, Gudiyatham - Gadambur - Kailasagiri - Vaniyambadi Road, Pudūr, Gudiyatham, Vellore, Tamil Nadu, India"
+PCKM,Pachchakurichi,175.73,2,~400-450m (14-16 coach),Estimated (category default),,,
+AB,Ambur,181.68,3,~500-600m (18-22 coach),Estimated (category default),12.784066,78.7217855,"Ambur, NH48, Ambur, Tirupattur, Tamil Nadu, 635802, India"
+VGM,Vinnamangalam,189.56,2,~400-450m (14-16 coach),Estimated (category default),12.72821,78.6786103,"Vinnamangalam, NH48, Kannadikuppam, Ambur, Tirupattur, Tamil Nadu, 635807, India"
+VN,Vaniyambadi,197.79,3,~500-600m (18-22 coach),Estimated (category default),12.679344,78.6227478,"Vaniyambadi, NH48, Vaniyambadi, Tirupattur, Tamil Nadu, 635752, India"
+KDY,Kettandapatti,206.78,2,~400-450m (14-16 coach),Estimated (category default),12.6252815,78.5708958,"Kettandapatti, NH48, Kettandapatti, Vaniyambadi, Tirupattur, Tamil Nadu, 635801, India"
+JTJ,Jolarpettai Junction,214.05,5,"~650m (24-coach), major junction",Verified,12.5639905,78.5783902,"Jolarpettai Junction, Railway station Road, Vakkanampatti, Jolarpet, Tirupathur, Tirupattur, Tamil Nadu, 635851, India"
+XX-JTJB,Jolarpettai B Cabin,217.66,0,No passenger platform (signal cabin / operational point only),,,,
+SKPT,Somanayakanahalli,223.22,2,~400-450m (14-16 coach),Estimated (category default),,,
+PU,Patchur,231.41,2,~400-450m (14-16 coach),Estimated (category default),12.5865309,78.4697329,"Patchur, Pachur Village Road, Mallaripalli, Patchur, Tirupathur, Tirupattur, Tamil Nadu, 635854, India"
+MAR,Mulanur area,242.46,2,~400-450m (14-16 coach),Estimated (category default),,,
+KPN,Kuppam,254.65,3,~500-600m (18-22 coach),Estimated (category default),12.74728,78.3403626,"Kuppam, Kuppam Road, RS Pet, Model Colony, Matarlapalli, Chinnakurbalapalle, Kuppam, Chittoor, Andhra Pradesh, 517425, India"
+GDP,Gudupalli,264.56,2,~400-450m (14-16 coach),Estimated (category default),17.619413,77.4730338,"Gudupalli, Mogudampally mandal, Sangareddy, Telangana, 502221, India"
+BSM,Bishegowdanahalli,269.78,2,~400-450m (14-16 coach),Estimated (category default),,,
+KSM,Krishnarajapuram area,276.82,2,~400-450m (14-16 coach),Estimated (category default),,,
+VRDP,Varadapuram,281.6,2,~400-450m (14-16 coach),Estimated (category default),13.0154212,80.2459988,"Varadapuram, Ward 172, Zone 13 Adyar, Chennai Corporation, Chennai, Tamil Nadu, 600085, India"
+BWT,Bangarapet Junction,288.87,6,"~600-650m (22-24 coach), junction station",Verified,12.9854946,78.178224,"Bangarpet Junction, SH95, Bangarapete, Bangarapet taluk, Kolar, Karnataka, 563114, India"
+MZV,Marikuppam area,295.07,2,~400-450m (14-16 coach),Estimated (category default),,,
+TCL,Tyakal,301.01,2,~400-450m (14-16 coach),Estimated (category default),12.9845826,78.0711128,"Tyakal, SH95, Kavalagiriyanahalli, Maluru taluk, Kolar, Karnataka, 563137, India"
+BFW,Byatrayanahalli,305.57,2,~400-450m (14-16 coach),Estimated (category default),12.9955268,78.0174938,"Byatrayanahalli, SH95, Kondashettahalli, Maluru taluk, Kolar, Karnataka, 563130, India"
+MLO,Malur,315.86,3,~500-600m (18-22 coach),Estimated (category default),12.992853,77.9387371,"Malur, Malur--Hosur Road, Maluru, Maluru taluk, Kolar, Karnataka, 562116, India"
+DKN,Devangonthi,328.01,2,~400-450m (14-16 coach),Estimated (category default),12.9851478,77.8312945,"Devangonthi, Soukya Road, Thirumalashettihalli, Hosakote taluk, Bengaluru North, Karnataka, 560067, India"
+WFD,Whitefield,335.84,3,~500-600m (18-22 coach),Estimated (category default),12.9957428,77.7579489,"Whitefield (Kadugodi), SH35, Belathur, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560067, India"
+SGWF,Krishnarajapuram Goods,338.29,0,No passenger platform (goods/marshalling yard),,,,
+WHPC,Whitefield Panel Cabin,339.56,0,No passenger platform (signal cabin / operational point only),,12.9959216,77.7273348,"Whitefield Panel Cabin, Kumbena Agrahara Main Road, Belathur, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560067, India"
+HDIH,Hoodi Halt,340.48,1,~300-350m (10-12 coach),Estimated (category default),,,
+KJM-DLS,Krishnarajapuram Diesel Loco,343.42,0,No passenger platform (signal cabin / operational point only),,13.004756,77.6920821,"Krishnarajapuram Taluk Office, Diesel Loco Shed Road, Devasandra, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560036, India"
+KJM,Krishnarajapuram,345.25,4,PF3 & PF4 support 24-coach trains; PF1 shorter,Verified,13.0005698,77.6743262,"Krishnarajapuram Railway Station, K.S. Nissar Ahmed Ward, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India"
+BPHI,Baiyyappanahalli,346.94,2,~400-450m (14-16 coach),Estimated (category default),12.999655,77.6411538,"Sir M Visvesvaraya Terminal, Baiyappanahalli Road, Kasturi Nagar, Bengaluru Central City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560033, India"
+BYPL,Baiyyappanahalli Jn,347.98,3,~500-550m (18-20 coach),Estimated (category default),,,
+BYPW,Baiyyappanahalli West,349.66,2,~400-450m (14-16 coach),Estimated (category default),,,
+BNCE,Bangalore East,351.97,2,~400-450m (14-16 coach),Estimated (category default),13.001147,77.6182271,"Bangalore East Railway Station, Frazer Town, Pulakeshi Nagar, Bengaluru North City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, India"
+BNC,Bangalore Cantt,354.67,3,~500-600m (18-22 coach),Estimated (category default),12.9936865,77.5980003,"Bangalore Cantonment, Cantonment Station Road, Jayamahal, Bengaluru Central City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560052, India"
+SBC,KSR Bengaluru City Jn,358.99,10,"~600-680m (22-24 coach), terminus station",Verified,,,

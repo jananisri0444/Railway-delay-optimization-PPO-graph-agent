@@ -1,0 +1,85 @@
+stationCode,stationName,distanceKm,platforms,Approx_Platform_Length_&_Coach_Capacity,Data_Confidence
+MAS,MGR Chennai Central,0,12,"Mixed: main PFs ~650m (24-coach), older bay PFs shorter (~9-12 coach)",Verified
+BBQ,Basin Bridge Jn,2.14,7,"~500-550m (18-20 coach), through-yard station",Verified
+VPY,Vyasarpadi Jeeva,3.43,2,~400-450m (14-16 coach),Estimated (category default)
+VJM,Vyasarpadi Jn,4.13,3,~500-550m (18-20 coach),Estimated (category default)
+PER,Perambur,5.47,4,"PF1 & PF4 ~660m (24-coach); PF2 & PF3 ~250m (9-coach), being extended",Verified
+PCW,Perambur Carriage Works,6.09,1,~300-400m (10-12 coach),Estimated (category default)
+PEW,Perambur Loco Works,7.52,1,~300-400m (10-12 coach),Estimated (category default)
+XX-ICF,Integral Coach Factory,8.29,1,~300-400m (10-12 coach),Estimated (category default)
+VLK,Villivakkam,9.34,4,"~450-500m (16-18 coach), suburban EMU station",Verified
+KOTR,Korattur,12.09,2,~400-450m (14-16 coach),Estimated (category default)
+PVM,Pattaravakkam,14,2,~400-450m (14-16 coach),Estimated (category default)
+ABU,Ambattur,15.47,2,~400-450m (14-16 coach),Estimated (category default)
+TMVL,Tirumullaivoyal,17.18,2,~400-450m (14-16 coach),Estimated (category default)
+ANNR,Annanur,18.27,2,~400-450m (14-16 coach),Estimated (category default)
+AVD,Avadi,21,3,~500-600m (18-22 coach),Estimated (category default)
+HC,Hindu College,23.91,2,~400-450m (14-16 coach),Estimated (category default)
+PAB,Pattabiram,24.91,2,~400-450m (14-16 coach),Estimated (category default)
+NEC,Nemilicherry,27.15,2,~400-450m (14-16 coach),Estimated (category default)
+TI,Tiruninravur,28.99,3,~500-600m (18-22 coach),Estimated (category default)
+VEU,Veppampattu,32.3,2,~400-450m (14-16 coach),Estimated (category default)
+SVR,Sevvapet Road,35.74,2,~400-450m (14-16 coach),Estimated (category default)
+PTLR,Putlur Halt,38.88,1,~300-350m (10-12 coach),Estimated (category default)
+TRL,Tiruvallur,41.62,6,"~660m (24-coach), terminal/originating EMU station",Verified
+EGT,Egattur Halt,44.88,1,~300-350m (10-12 coach),Estimated (category default)
+KBT,Kadambattur,47.29,2,~400-450m (14-16 coach),Estimated (category default)
+SPAM,Spic Nagar,50.34,2,~400-450m (14-16 coach),Estimated (category default)
+MAF,Manavur,54.06,2,~400-450m (14-16 coach),Estimated (category default)
+TO,Tiruvalangadu,58.21,2,~400-450m (14-16 coach),Estimated (category default)
+MSU,Mosur,63.82,2,~400-450m (14-16 coach),Estimated (category default)
+PLMG,Puliyamangalam,66.76,2,~400-450m (14-16 coach),Estimated (category default)
+AJLS,Arakkonam Jn (Sub),67.35,3,~500-550m (18-20 coach),Estimated (category default)
+AJJ,Arakkonam Junction,68.6,8,~650-700m on main PFs (24-coach); PF6-8 shorter,Verified
+MLPM,Melpattam,71.3,2,~400-450m (14-16 coach),Estimated (category default)
+CTRE,Chitteri,76.43,2,~400-450m (14-16 coach),Estimated (category default)
+AVN,Anavardikhanpet,80.31,2,~400-450m (14-16 coach),Estimated (category default)
+MDVE,Mambalam,86.57,2,~400-450m (14-16 coach),Estimated (category default)
+SHU,Sholinghur,90.04,3,~500-600m (18-22 coach),Estimated (category default)
+TUG,Thalangai,97.12,2,~400-450m (14-16 coach),Estimated (category default)
+MRLM,Marudhalam,99.63,2,~400-450m (14-16 coach),Estimated (category default)
+WJR,Walajah Road,104.99,2,~400-450m (14-16 coach),Estimated (category default)
+MCN,Mukundarayapuram,112.76,2,~400-450m (14-16 coach),Estimated (category default)
+THL,Tindivanam,117.68,2,~400-450m (14-16 coach),Estimated (category default)
+SVUR,Sevur,123.84,2,~400-450m (14-16 coach),Estimated (category default)
+KPD,Katpadi Junction,129.57,5,"~600-650m (22-24 coach), major junction",Verified
+LTI,Latteri,137.4,2,~400-450m (14-16 coach),Estimated (category default)
+VJ,Vellore Jn,141.51,3,~500-550m (18-20 coach),Estimated (category default)
+KVN,Kavanur,148.08,2,~400-450m (14-16 coach),Estimated (category default)
+GYM,Gudiyattam,154.15,3,~500-600m (18-22 coach),Estimated (category default)
+MEH,Melalathur,158.98,2,~400-450m (14-16 coach),Estimated (category default)
+VLT,Valathur,164.03,2,~400-450m (14-16 coach),Estimated (category default)
+MPI,Melpatti,170.02,2,~400-450m (14-16 coach),Estimated (category default)
+PCKM,Pachchakurichi,175.73,2,~400-450m (14-16 coach),Estimated (category default)
+AB,Ambur,181.68,3,~500-600m (18-22 coach),Estimated (category default)
+VGM,Vinnamangalam,189.56,2,~400-450m (14-16 coach),Estimated (category default)
+VN,Vaniyambadi,197.79,3,~500-600m (18-22 coach),Estimated (category default)
+KDY,Kettandapatti,206.78,2,~400-450m (14-16 coach),Estimated (category default)
+JTJ,Jolarpettai Junction,214.05,5,"~650m (24-coach), major junction",Verified
+XX-JTJB,Jolarpettai B Cabin,217.66,0,No passenger platform (signal cabin / operational point only),N/A
+SKPT,Somanayakanahalli,223.22,2,~400-450m (14-16 coach),Estimated (category default)
+PU,Patchur,231.41,2,~400-450m (14-16 coach),Estimated (category default)
+MAR,Mulanur area,242.46,2,~400-450m (14-16 coach),Estimated (category default)
+KPN,Kuppam,254.65,3,~500-600m (18-22 coach),Estimated (category default)
+GDP,Gudupalli,264.56,2,~400-450m (14-16 coach),Estimated (category default)
+BSM,Bishegowdanahalli,269.78,2,~400-450m (14-16 coach),Estimated (category default)
+KSM,Krishnarajapuram area,276.82,2,~400-450m (14-16 coach),Estimated (category default)
+VRDP,Varadapuram,281.6,2,~400-450m (14-16 coach),Estimated (category default)
+BWT,Bangarapet Junction,288.87,6,"~600-650m (22-24 coach), junction station",Verified
+MZV,Marikuppam area,295.07,2,~400-450m (14-16 coach),Estimated (category default)
+TCL,Tyakal,301.01,2,~400-450m (14-16 coach),Estimated (category default)
+BFW,Byatrayanahalli,305.57,2,~400-450m (14-16 coach),Estimated (category default)
+MLO,Malur,315.86,3,~500-600m (18-22 coach),Estimated (category default)
+DKN,Devangonthi,328.01,2,~400-450m (14-16 coach),Estimated (category default)
+WFD,Whitefield,335.84,3,~500-600m (18-22 coach),Estimated (category default)
+SGWF,Krishnarajapuram Goods,338.29,0,No passenger platform (goods/marshalling yard),N/A
+WHPC,Whitefield Panel Cabin,339.56,0,No passenger platform (signal cabin / operational point only),N/A
+HDIH,Hoodi Halt,340.48,1,~300-350m (10-12 coach),Estimated (category default)
+KJM-DLS,Krishnarajapuram Diesel Loco,343.42,0,No passenger platform (signal cabin / operational point only),N/A
+KJM,Krishnarajapuram,345.25,4,PF3 & PF4 support 24-coach trains; PF1 shorter,Verified
+BPHI,Baiyyappanahalli,346.94,2,~400-450m (14-16 coach),Estimated (category default)
+BYPL,Baiyyappanahalli Jn,347.98,3,~500-550m (18-20 coach),Estimated (category default)
+BYPW,Baiyyappanahalli West,349.66,2,~400-450m (14-16 coach),Estimated (category default)
+BNCE,Bangalore East,351.97,2,~400-450m (14-16 coach),Estimated (category default)
+BNC,Bangalore Cantt,354.67,3,~500-600m (18-22 coach),Estimated (category default)
+SBC,KSR Bengaluru City Jn,358.99,10,"~600-680m (22-24 coach), terminus station",Verified
