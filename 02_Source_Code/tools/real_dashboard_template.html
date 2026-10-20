@@ -1,0 +1,70 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Real vs Graph PPO vs Flat PPO</title>
+<style>
+:root{--bg:#f3f5f9;--card:#fff;--ink:#16202f;--mute:#6b7688;--line:#e4e8ef;--real:#111827;--graph:#14B8A6;--flat:#F59E0B;--red:#e5484d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Segoe UI,Arial,sans-serif}
+header{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);padding:10px 22px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+h1{font-size:16px;margin:0 8px 0 0}select,button,input[type=text]{font:inherit;padding:6px 10px;border:1px solid #cfd6e2;border-radius:8px;background:#fff}button{cursor:pointer}button.on{background:#e8f0ff;border-color:#2f6fed;color:#2f6fed}
+label{color:var(--mute);font-size:12px;display:flex;gap:6px;align-items:center}.sp{flex:1}
+.wrap{max-width:1450px;margin:0 auto;padding:16px 22px 40px}.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:12px}
+.c{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px}.c span{color:var(--mute);font-size:12px}.c b{display:block;font-size:21px;margin-top:2px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px}.card h3{margin:0 0 2px;font-size:15px}.sub{color:var(--mute);font-size:12px;margin-bottom:8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.banner{padding:10px 14px;border-radius:10px;margin-bottom:12px;background:#fff1dc;color:#8a5a00;border:1px solid #f6d9a4}.banner.ok{background:#e3f7ec;color:#0f6e56;border-color:#bfe8d6}
+.leg{display:flex;gap:14px;font-size:12px;color:var(--mute);margin:4px 0}.leg i{display:inline-block;width:18px;height:3px;margin-right:5px;vertical-align:middle}
+table{width:100%;border-collapse:collapse;font-size:12px}th{position:sticky;top:0;background:#0B1F3A;color:#fff;padding:6px 8px;text-align:left}td{padding:5px 8px;border-bottom:1px solid var(--line)}tr.d td{background:#fff8e6}.sc{max-height:380px;overflow:auto}
+svg{width:100%;display:block}.big{font-size:12px}@media(max-width:1000px){.grid{grid-template-columns:1fr}.cards{grid-template-columns:repeat(3,1fr)}}
+</style></head><body>
+<header><h1>Real vs Graph PPO vs Flat PPO</h1><label>Day <select id="day"></select></label><label>Train <select id="train"></select></label><span class="sp"></span><span id="meta" style="color:var(--mute);font-size:12px"></span></header>
+<div class="wrap"><div id="banner"></div><div class="cards" id="cards"></div>
+<div class="card"><h3>Live replay along the corridor</h3><div class="sub">Each dot is a train. Top lane: what REALLY happened. Middle: Graph PPO. Bottom: Flat PPO. Dots separate where the models got a train there at a different time.</div>
+<div style="display:flex;gap:10px;align-items:center;margin-bottom:6px"><button id="play">▶ Play</button><input type="range" id="tm" style="flex:1"><b id="clock" style="min-width:90px;text-align:right"></b><label>Speed <input type="range" id="spd" min="1" max="12" value="4" style="width:80px"></label></div><svg id="anim" height="250"></svg></div>
+<div class="grid"><div class="card"><h3 id="t1">Delay along the route</h3><div class="sub" id="s1"></div><div class="leg"><span><i style="background:var(--real)"></i>REAL</span><span><i style="background:var(--graph)"></i>Graph PPO</span><span><i style="background:var(--flat)"></i>Flat PPO</span></div><svg id="c1" height="300"></svg></div>
+<div class="card"><h3>Time–distance diagram</h3><div class="sub" id="s2">Pick a train above: arrival time at each station (x) for REAL and the two models.</div><svg id="c2" height="300"></svg></div></div>
+<div class="card"><h3>Per-train summary</h3><div class="sub">Average and last-station delay for each train. Click a row to open that train in the charts above.</div><div class="sc" style="max-height:300px"><table><thead><tr><th>Train</th><th>Stations</th><th>Route</th><th>REAL avg</th><th>Graph avg</th><th>Flat avg</th><th>REAL last</th><th>Graph last</th><th>Flat last</th></tr></thead><tbody id="ts"></tbody></table></div></div>
+<div class="card"><h3>Station by station table</h3><div class="sub"><label><input type="checkbox" id="onlyd"> only rows where Graph PPO and Flat PPO differ</label></div><div class="sc"><table><thead><tr><th>Train</th><th>Station</th><th>Scheduled</th><th>REAL arr</th><th>REAL delay</th><th>Graph arr</th><th>Graph delay</th><th>Flat arr</th><th>Flat delay</th></tr></thead><tbody id="tb"></tbody></table></div></div></div>
+<script>
+const D=__DATA__,$=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg',COL={r:'#111827',g:'#14B8A6',f:'#F59E0B'};
+let day,train='ALL',timer=null;
+const hh=m=>{const d=Math.floor(m/1440),r=((Math.round(m)%1440)+1440)%1440;return String(Math.floor(r/60)).padStart(2,'0')+':'+String(r%60).padStart(2,'0')+(d>0?' +1d':'')};
+const R=()=>D.days[day].rows,sel=()=>train==='ALL'?R():R().filter(x=>x.t==train);
+const mean=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
+function el(n,a,t,p){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;if(p)p.appendChild(e);return e}
+function init(){const ds=$('day');Object.keys(D.days).forEach(d=>ds.add(new Option(d+' ('+['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][D.days[d].weekday]+')',d)));day=ds.value;ds.onchange=()=>{day=ds.value;fillTrains();draw()};
+$('train').onchange=e=>{train=e.target.value;draw()};$('onlyd').onchange=table;$('play').onclick=play;$('tm').oninput=anim;fillTrains();draw()}
+function fillTrains(){const s=$('train');s.innerHTML='';s.add(new Option('All trains','ALL'));[...new Set(R().map(x=>x.t))].sort((a,b)=>a-b).forEach(t=>s.add(new Option(t+' '+(R().find(x=>x.t==t).n||''),t)));train='ALL';s.value='ALL';
+const all=R().flatMap(x=>[x.rm,x.gm,x.fm]);$('tm').min=Math.floor(Math.min(...all)-5);$('tm').max=Math.ceil(Math.max(...all)+5);$('tm').value=$('tm').min}
+function draw(){cards();line();tdiag();trainsum();table();anim()}
+function trainsum(){const g={};R().forEach(x=>{(g[x.t]=g[x.t]||[]).push(x)});const f=v=>v.toFixed(1);
+$('ts').innerHTML=Object.keys(g).sort((a,b)=>a-b).map(t=>{const r=g[t].sort((a,b)=>a.rm-b.rm),L=r[r.length-1];return '<tr style="cursor:pointer" onclick="pick('+t+')"><td>'+t+'</td><td>'+r.length+'</td><td>'+r[0].s+' → '+L.s+'</td><td>'+f(mean(r.map(x=>Math.max(x.rd,0))))+'</td><td>'+f(mean(r.map(x=>x.gd)))+'</td><td>'+f(mean(r.map(x=>x.fd)))+'</td><td>'+f(Math.max(L.rd,0))+'</td><td>'+f(L.gd)+'</td><td>'+f(L.fd)+'</td></tr>'}).join('')}
+function pick(t){train=String(t);$('train').value=train;draw();window.scrollTo({top:0,behavior:'smooth'})}
+function cards(){const r=R(),I=D.days[day].info,diff=r.filter(x=>Math.abs(x.gm-x.fm)>0.05).length,nd=I.graph.decisions+I.flat.decisions;
+$('meta').textContent='mode: '+D.meta.mode+' | real trains that day: '+D.days[day].real_trains+' | real data covers '+D.meta.real_trains_in_data+' of 127 trains';
+$('banner').innerHTML=nd===0?'<div class="banner"><b>Graph PPO and Flat PPO are identical here because neither model was asked to decide anything.</b> On this day no conflict or waiting train needed a dispatcher, so the simulator just carries each train\'s real entry delay along the timetable. Re-run with <code>--mode full</code> (busier day) or <code>--stress</code> to give the models real decisions.</div>':'<div class="banner ok">The models faced decisions on this day: Graph PPO '+I.graph.decisions+', Flat PPO '+I.flat.decisions+'. Rows where they differ: '+diff+' of '+r.length+'.</div>';
+const k=(l,v)=>'<div class="c"><span>'+l+'</span><b>'+v+'</b></div>',m=f=>mean(r.map(f)).toFixed(1);
+$('cards').innerHTML=k('Records compared',r.length)+k('Avg delay REAL (min)',mean(r.map(x=>Math.max(x.rd,0))).toFixed(1))+k('Avg delay Graph PPO',m(x=>x.gd))+k('Avg delay Flat PPO',m(x=>x.fd))+k('Decisions Graph / Flat',I.graph.decisions+' / '+I.flat.decisions)+k('Delay added by dispatching G / F',I.graph.added_delay+' / '+I.flat.added_delay)}
+function axes(s,W,H,P,xs,ymax,ylab){for(let i=0;i<=4;i++){const y=H-P.b-(H-P.t-P.b)*i/4;el('line',{x1:P.l,x2:W-P.r,y1:y,y2:y,stroke:'#e4e8ef'},null,s);el('text',{x:P.l-6,y:y+4,'text-anchor':'end','font-size':10,fill:'#6b7688'},(ymax*i/4).toFixed(0),s)}
+el('text',{x:12,y:P.t-6,'font-size':10,fill:'#6b7688'},ylab,s);const st=Math.max(1,Math.ceil(xs.length/16));xs.forEach((l,i)=>{if(i%st==0)el('text',{x:P.l+(W-P.l-P.r)*(xs.length<2?.5:i/(xs.length-1)),y:H-P.b+14,'text-anchor':'middle','font-size':9,fill:'#6b7688'},l,s)})}
+function line(){const s=$('c1');s.innerHTML='';const W=s.clientWidth||600,H=300,P={l:36,r:10,t:18,b:30};let xs,ser;
+if(train==='ALL'){const g={};R().forEach(x=>{(g[x.s]=g[x.s]||{rk:x.rk,r:[],g:[],f:[]});g[x.s].r.push(Math.max(x.rd,0));g[x.s].g.push(x.gd);g[x.s].f.push(x.fd)});const ks=Object.keys(g).sort((a,b)=>g[a].rk-g[b].rk);xs=ks;
+ser={r:ks.map(k=>mean(g[k].r)),g:ks.map(k=>mean(g[k].g)),f:ks.map(k=>mean(g[k].f))};$('t1').textContent='Average delay along the corridor';$('s1').textContent='Mean arrival delay (min) per station, all trains'}
+else{const r=sel();xs=r.map(x=>x.s);ser={r:r.map(x=>Math.max(x.rd,0)),g:r.map(x=>x.gd),f:r.map(x=>x.fd)};$('t1').textContent='Train '+train+': delay at each station';$('s1').textContent='Stations in travel order'}
+const ymax=Math.max(5,...ser.r,...ser.g,...ser.f)*1.1;axes(s,W,H,P,xs,ymax,'delay (min)');
+const X=i=>P.l+(W-P.l-P.r)*(xs.length<2?.5:i/(xs.length-1)),Y=v=>H-P.b-(H-P.t-P.b)*v/ymax;
+[['r',3],['g',2],['f',2]].forEach(([k,w])=>{el('polyline',{points:ser[k].map((v,i)=>X(i)+','+Y(v)).join(' '),fill:'none',stroke:COL[k],'stroke-width':w,'stroke-dasharray':k==='f'?'5 3':''},null,s);
+ser[k].forEach((v,i)=>{const c=el('circle',{cx:X(i),cy:Y(v),r:3,fill:COL[k]},null,s);el('title',{},xs[i]+': '+v.toFixed(1)+' min',c)})})}
+function tdiag(){const s=$('c2');s.innerHTML='';if(train==='ALL'){$('s2').textContent='Pick a train above: arrival time at each station (x) for REAL and the two models.';return}
+const r=sel();if(!r.length)return;const W=s.clientWidth||600,H=300,P={l:44,r:10,t:14,b:28};const ts=r.flatMap(x=>[x.rm,x.gm,x.fm]),t0=Math.min(...ts)-3,t1=Math.max(...ts)+3,rk=r.map(x=>x.rk),r0=Math.min(...rk),r1=Math.max(...rk)||1;
+$('s2').textContent='Train '+train+': time (x) vs position along the corridor (y). Lines that coincide mean the models arrived exactly when the train really did.';
+const X=t=>P.l+(W-P.l-P.r)*(t-t0)/(t1-t0||1),Y=k=>H-P.b-(H-P.t-P.b)*(k-r0)/((r1-r0)||1);
+for(let i=0;i<=4;i++){const t=t0+(t1-t0)*i/4;el('line',{x1:X(t),x2:X(t),y1:P.t,y2:H-P.b,stroke:'#e4e8ef'},null,s);el('text',{x:X(t),y:H-P.b+14,'text-anchor':'middle','font-size':9,fill:'#6b7688'},hh(t),s)}
+r.forEach(x=>el('text',{x:P.l-4,y:Y(x.rk)+3,'text-anchor':'end','font-size':8,fill:'#6b7688'},x.s,s));
+[['rm','r',3],['gm','g',2],['fm','f',2]].forEach(([k,c,w])=>{el('polyline',{points:r.map(x=>X(x[k])+','+Y(x.rk)).join(' '),fill:'none',stroke:COL[c],'stroke-width':w,'stroke-dasharray':c==='f'?'5 3':''},null,s);r.forEach(x=>{const e=el('circle',{cx:X(x[k]),cy:Y(x.rk),r:3,fill:COL[c]},null,s);el('title',{},x.s+' '+hh(x[k]),e)})})}
+function table(){const o=$('onlyd').checked;$('tb').innerHTML=sel().filter(x=>!o||Math.abs(x.gm-x.fm)>0.05).slice(0,1500).map(x=>'<tr'+(Math.abs(x.gm-x.fm)>0.05?' class="d"':'')+'><td>'+x.t+'</td><td>'+x.s+'</td><td>'+x.sch+'</td><td>'+hh(x.rm)+'</td><td>'+x.rd+'</td><td>'+hh(x.gm)+'</td><td>'+x.gd+'</td><td>'+hh(x.fm)+'</td><td>'+x.fd+'</td></tr>').join('')}
+function pos(pts,t){if(t<pts[0][0]||t>pts[pts.length-1][0])return null;for(let i=1;i<pts.length;i++)if(t<=pts[i][0]){const a=pts[i-1],b=pts[i],f=b[0]===a[0]?1:(t-a[0])/(b[0]-a[0]);return a[1]+(b[1]-a[1])*f}return pts[pts.length-1][1]}
+function anim(){const s=$('anim');s.innerHTML='';const W=s.clientWidth||900,H=250,P=40,t=+$('tm').value;$('clock').textContent=hh(t);const N=D.stations.length-1,X=k=>P+(W-2*P)*k/N;
+const g={};R().forEach(x=>{(g[x.t]=g[x.t]||{r:[],g:[],f:[]});g[x.t].r.push([x.rm,x.rk]);g[x.t].g.push([x.gm,x.rk]);g[x.t].f.push([x.fm,x.rk])});
+[['r','REAL',60],['g','Graph PPO',130],['f','Flat PPO',200]].forEach(([k,l,y])=>{el('line',{x1:P,x2:W-P,y1:y,y2:y,stroke:'#9aa5b6','stroke-width':3,'stroke-linecap':'round'},null,s);el('text',{x:P,y:y-26,'font-size':11,'font-weight':700,fill:COL[k]},l,s);
+let n=0;Object.keys(g).forEach(tn=>{const pts=g[tn][k].sort((a,b)=>a[0]-b[0]),p=pos(pts,t);if(p==null)return;n++;const c=el('circle',{cx:X(p),cy:y,r:6,fill:COL[k],stroke:'#fff','stroke-width':1.5},null,s);el('title',{},'Train '+tn,c)});el('text',{x:W-P,y:y-26,'text-anchor':'end','font-size':11,fill:'#6b7688'},n+' trains running',s)});
+['MAS',D.stations[Math.floor(N/2)],D.stations[N]].forEach((c,i)=>el('text',{x:X(i===0?0:i===1?Math.floor(N/2):N),y:236,'text-anchor':'middle','font-size':10,fill:'#6b7688'},c,s))}
+function play(){if(timer){clearInterval(timer);timer=null;$('play').textContent='▶ Play';return}$('play').textContent='■ Pause';timer=setInterval(()=>{const t=$('tm');let v=+t.value+(+$('spd').value);if(v>+t.max){v=+t.min}t.value=v;anim()},60)}
+window.addEventListener('resize',()=>{line();tdiag();anim()});init();
+</script></body></html>

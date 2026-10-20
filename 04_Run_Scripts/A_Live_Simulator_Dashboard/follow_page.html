@@ -1,0 +1,96 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Decision follower</title>
+<style>
+:root{--bg:#f3f5f9;--card:#fff;--ink:#16202f;--mute:#6b7688;--line:#e4e8ef;--blue:#2f6fed;--red:#e5484d;--green:#12a150;--violet:#7c4dff;--amber:#f59f00}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.94);border-bottom:1px solid var(--line);padding:10px 20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+h1{font-size:16px;margin:0 6px 0 0}a.lnk{font-size:12px;color:var(--blue);text-decoration:none;border:1px solid #cfd6e2;border-radius:8px;padding:6px 10px}
+select,button,input[type=text],input[type=number],input[type=time]{font:inherit;padding:6px 10px;border:1px solid #cfd6e2;border-radius:8px;background:#fff;color:var(--ink)}button{cursor:pointer}button.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+label{color:var(--mute);font-size:12px;display:flex;gap:5px;align-items:center}.sp{flex:1}
+.wrap{max-width:1450px;margin:0 auto;padding:14px 20px 40px}.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:12px}
+.c{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 13px}.c span{color:var(--mute);font-size:12px}.c b{display:block;font-size:20px;margin-top:1px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px}.card h3{margin:0 0 4px;font-size:15px}.sub{color:var(--mute);font-size:12px;margin-bottom:8px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.empty{color:var(--mute);text-align:center;padding:26px}
+.role{display:flex;gap:8px;align-items:center;padding:7px 10px;border-radius:8px;margin:5px 0;font-size:13px}.role.me{background:#f0eaff;border:1px solid #d9ccff}.role.blk{background:#fff4de;border:1px solid #f6d9a4}
+.chip{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:700;background:#eef1f6;color:#44506a}.chip.HOLD{background:#fdecec;color:var(--red)}.chip.PROCEED,.chip.GRANTPLATFORM{background:#e3f7ec;color:var(--green)}.chip.LOOP{background:#f0eaff;color:var(--violet)}
+.pb{display:flex;gap:6px;margin-top:6px;font-size:11px;color:var(--mute)}.pb span{flex:1}.pb i{display:block;height:6px;border-radius:3px;background:#d9e1f2;margin-top:2px}.pb i.best{background:var(--blue)}
+.why{font-size:13px;color:#33405a;margin-top:8px;line-height:1.5}.big{font-size:20px;font-weight:800}
+.fcard{border:1px solid var(--line);border-left:4px solid #9aa5b6;border-radius:8px;padding:7px 10px;margin-bottom:6px;font-size:12.5px;cursor:pointer;background:#fcfdff}.fcard.loop{border-left-color:var(--violet)}.fcard.hold{border-left-color:var(--red)}.fcard.go{border-left-color:var(--green)}.fcard:hover{background:#f4f7ff}
+table{width:100%;border-collapse:collapse;font-size:12px}th{background:#0B1F3A;color:#fff;padding:5px 8px;text-align:left}td{padding:4px 8px;border-bottom:1px solid var(--line)}.scroll{max-height:340px;overflow:auto}
+.banner{padding:9px 13px;border-radius:10px;background:#e8f0ff;color:#244b9a;border:1px solid #c6d8fb;margin-bottom:12px;font-size:13px}
+@media(max-width:1000px){.g2{grid-template-columns:1fr}.cards{grid-template-columns:repeat(3,1fr)}}
+</style></head><body>
+<header><h1>Decision follower</h1><a class="lnk" href="/">← overall dashboard</a>
+<label>Day <select id="wd"><option value="0">Mon</option><option value="1">Tue</option><option value="2">Wed</option><option value="3">Thu</option><option value="4">Fri</option><option value="5">Sat</option><option value="6">Sun</option></select></label>
+<label>Model <select id="model"><option value="graph">Graph PPO</option><option value="flat">Flat PPO</option></select></label>
+<label>Start <input id="start" type="time" value="08:00"></label><label>End <input id="end" type="time" value="22:00"></label><label>Seed <input id="seed" type="number" value="5" style="width:64px"></label>
+<label><input type="checkbox" id="stress" checked> Stress test</label>
+<button onclick="newRun()">New run</button><button class="primary" id="play" onclick="togglePlay()">▶ Play</button><button onclick="nextDecision()">⏭ Next decision</button>
+<label>Speed <span>slow</span><input type="range" id="spd" min="1" max="10" value="3" style="width:90px;padding:0"><span>fast</span></label>
+<label><input type="checkbox" id="showForced"> show forced decisions</label><span class="sp"></span><button onclick="compareModels()">Compare Graph vs Flat on this scenario</button></header>
+<div class="wrap">
+<div class="banner">The page picks the train for you: every time the PPO agent is asked something, the train it is asked about is shown as <b>★ being decided</b>, and the trains affected are shown as <b>⚠ blocked</b>. Press Play and watch. Tip: Monday + seed 5, or Friday + seed 0 (Stress test) contain loop &amp; overtake decisions.</div>
+<div class="cards"><div class="c"><span>Simulated time</span><b id="k-time">--:--</b></div><div class="c"><span>Real choices so far</span><b id="k-n">0</b></div><div class="c"><span>HOLD</span><b id="k-h">0</b></div><div class="c"><span>PROCEED</span><b id="k-p">0</b></div><div class="c"><span>LOOP &amp; OVERTAKE</span><b id="k-l">0</b></div><div class="c"><span>Delay added by dispatching</span><b id="k-d">0.0</b></div></div>
+<div class="g2"><div class="card"><h3>Now deciding</h3><div class="sub" id="now-sub">Waiting for the first decision…</div><div id="now"><div class="empty">Press Play.</div></div></div>
+<div class="card"><h3>What happens (loop &amp; overtake animation)</h3><div class="sub" id="anim-sub">Plays automatically when the agent chooses LOOP &amp; OVERTAKE.</div><svg id="anim" width="100%" height="250" style="background:#f8fafc;border:1px solid var(--line);border-radius:10px"></svg><div id="anim-log" class="sub" style="margin-top:6px"></div></div></div>
+<div class="g2"><div class="card"><h3>Journey of the train being decided</h3><div class="sub" id="j-sub"></div><div class="scroll"><table><thead><tr><th>Station</th><th>Stops?</th><th>Scheduled</th><th>Simulated</th><th>Delay</th><th>Note</th></tr></thead><tbody id="j"></tbody></table></div></div>
+<div class="card"><h3>Decision feed (newest first, click to replay)</h3><div class="sub">Every real choice made by the agent in this run.</div><div id="feed" class="scroll" style="max-height:380px"></div></div></div>
+<div class="card" id="cmp" style="display:none"><h3>Graph PPO vs Flat PPO on this exact scenario</h3><div id="cmp-body" class="sub">Running both models… this can take 1–2 minutes.</div></div>
+</div>
+<script>
+const $=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg';
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const mins=v=>String(Math.floor(v/60)%24).padStart(2,'0')+':'+String(Math.floor(v)%60).padStart(2,'0'),tm=s=>{const[h,m]=s.split(':').map(Number);return h*60+m};
+async function api(u,o){const r=await fetch(u,o),j=await r.json();if(!r.ok)throw new Error(j.error||r.statusText);return j}
+let lastId=0,playing=false,busy=false,finished=false,ready=false,stats={n:0,h:0,p:0,l:0},animTimer=null,feed=[];
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+const pause=()=>Math.round(7000/Math.pow(1.45,+$('spd').value-1));        // slow: ~7 s per decision ... fast: ~0.3 s
+async function newRun(){playing=false;$('play').textContent='▶ Play';stopAnim();lastId=0;finished=false;stats={n:0,h:0,p:0,l:0};feed=[];$('feed').innerHTML='';$('now').innerHTML='<div class="empty">Press Play.</div>';$('j').innerHTML='';$('anim').innerHTML='';$('anim-log').textContent='';$('cmp').style.display='none';
+ const p=await api('/api/reset',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({start:tm($('start').value),end:tm($('end').value),seed:+$('seed').value,weekday:+$('wd').value,model:$('model').value,stress:$('stress').checked})});ready=true;kpis(p)}
+function kpis(p){$('k-time').textContent=mins(p.sim_time_min||0);$('k-n').textContent=stats.n;$('k-h').textContent=stats.h;$('k-p').textContent=stats.p;$('k-l').textContent=stats.l;$('k-d').textContent=p.metrics?(+p.metrics.delay).toFixed(1):'0.0'}
+function reason(r){const bl=(r.blocked_info||[]).map(x=>x.train+' (P'+x.priority+')').join(', ');
+ if(r.kind==='waiting')return 'Train '+r.train_number+' waits at '+esc(r.station||'')+' for a platform. Options: '+r.n_options+'.';
+ const a='Train '+r.train_number+' (P'+r.priority+') is the least important train in the conflict at '+esc(r.location||'the section')+' and blocks '+r.n_blocked+' more important train(s): '+bl+'. While the conflict lasts, blocking costs them about '+r.blocking_cost+' points per minute; holding train '+r.train_number+' costs '+r.hold_cost+' per minute.';
+ return a+(r.action===0?' The agent chose HOLD: train '+r.train_number+' waits 1 minute and the blocking stops for that minute.':r.action===2?' The agent chose LOOP &amp; OVERTAKE: train '+r.train_number+' goes into the loop at '+esc(r.loop_station_name||r.loop_station||'')+' (one-off 1.5 min), the others pass, the conflict is cleared for 10 minutes.':' The agent chose PROCEED: nobody is held, and the blocked trains keep losing time while the conflict lasts.')}
+const pct=v=>(100*v).toFixed(0)+'%';
+function present(group){const r=group[0];
+ $('now-sub').textContent='Simulated time '+mins(r.time)+' · '+group.length+' decision(s) in this step';
+ $('now').innerHTML=group.map((r,gi)=>{const mx=Math.max(r.probs.hold,r.probs.grant_platform,r.probs.grant_loop),pb=[['Hold',r.probs.hold],[r.kind==='waiting'?'Platform':'Proceed',r.probs.grant_platform],['Loop',r.probs.grant_loop]].map(([l,v])=>'<span>'+l+' '+pct(v)+'<i class="'+(v===mx?'best':'')+'" style="width:'+Math.max(2,100*v)+'%"></i></span>').join('');
+  const chip=r.action===2?'LOOP':r.action_label.replace(/\s/g,'').replace('&','');
+  return '<div style="'+(gi?'margin-top:14px;border-top:1px dashed #d9e1f2;padding-top:10px':'')+'"><div class="role me"><span class="big">★</span><div><b>Train '+r.train_number+'</b> · '+esc(r.name)+' · priority '+r.priority+'<br><span style="color:#6b7688">is the train being decided by the PPO agent</span></div><span class="sp" style="flex:1"></span><span class="chip '+(r.action===2?'LOOP':r.action===0?'HOLD':'PROCEED')+'">'+esc(r.action_label)+'</span></div>'
+   +(r.blocked_info||[]).map(b=>'<div class="role blk"><span class="big">⚠</span><div><b>Train '+b.train+'</b> · '+esc(b.name)+' · priority '+b.priority+'<br><span style="color:#8a5a00">is blocked and waits for this decision</span></div></div>').join('')
+   +'<div class="pb">'+pb+'</div><div class="why">'+reason(r)+'</div></div>'}).join('');
+ loadJourney(r.train_number,r)}
+async function loadJourney(tn,r){try{const D=await api('/api/train/'+tn);$('j-sub').textContent='Train '+tn+' · '+D.name+' · priority '+D.priority+' · now '+D.status+', delay '+D.delay+' min';
+ $('j').innerHTML=D.journey.map(j=>'<tr><td><b>'+esc(j.station)+'</b> <span style="color:#6b7688">'+esc(j.name)+'</span></td><td>'+(j.halt?'stops':'passes')+'</td><td>'+mins(j.scheduled)+'</td><td>'+(j.sim_time==null?'-':mins(j.sim_time))+'</td><td>'+(j.delay==null?'-':j.delay)+'</td><td>'+(j.loop?'<b style="color:#7c4dff">waits in loop here</b>':'')+'</td></tr>').join('');
+ if(r&&r.action===2&&r.kind==='section'){const ev=D.loop_events.find(e=>e.id===r.id);if(ev)startAnim(ev,Math.max(2500,pause()))}else{stopAnim();$('anim').innerHTML='';$('anim-log').textContent=''; $('anim-sub').textContent='No loop in this decision. The animation plays when the agent chooses LOOP & OVERTAKE.'}}catch(e){}}
+function addFeed(r){const cls=r.action===2?'loop':r.action===0?'hold':'go';feed.unshift(r);const d=document.createElement('div');d.className='fcard '+cls;
+ d.innerHTML='<b>'+mins(r.time)+'</b> · ★ train '+r.train_number+' (P'+r.priority+') → <span class="chip '+(r.action===2?'LOOP':r.action===0?'HOLD':'PROCEED')+'">'+esc(r.action_label)+'</span>'+(r.n_blocked?' · blocks '+r.n_blocked+' train(s)':'')+(r.location?' · '+esc(r.location):'');d.onclick=()=>present([r]);$('feed').prepend(d);if($('feed').children.length>250)$('feed').lastChild.remove()}
+async function stepOnce(){if(busy||finished||!ready)return null;busy=true;try{const p=await api('/api/step',{method:'POST'});finished=!!p.finished;
+ const j=await api('/api/decisions?since='+lastId);const ds=j.decisions;if(ds.length)lastId=ds[ds.length-1].id;
+ const real=ds.filter(r=>r.n_options>1||$('showForced').checked);real.forEach(r=>{if(r.n_options>1){stats.n++;if(r.action===0)stats.h++;else if(r.action===2)stats.l++;else if(r.kind==='section'||r.action===1)stats.p++}});kpis(p);
+ if(real.length){real.slice().reverse().forEach(addFeed);present(real);return true}return false}finally{busy=false}}
+async function nextDecision(){if(!ready)await newRun();let g=0;while(!finished&&g<400){g++;if(await stepOnce())break}}
+async function togglePlay(){if(playing){playing=false;$('play').textContent='▶ Play';return}if(!ready||finished)await newRun();playing=true;$('play').textContent='■ Pause';
+ while(playing&&!finished){const shown=await stepOnce();await sleep(shown?pause():20)}playing=false;$('play').textContent='▶ Play';if(finished)$('now-sub').textContent='Simulation finished.'}
+/* ---- loop & overtake animation (auto-plays) ---- */
+function stopAnim(){if(animTimer){clearInterval(animTimer);animTimer=null}}
+function el(n,a,txt,p){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;p.appendChild(e);return e}
+function leave(e){const ps=e.blockers.map(b=>b.pass_time).filter(x=>x!=null);return Math.max(e.time+3,(ps.length?Math.max(...ps):e.until)+0.5)}
+function startAnim(e,ms){stopAnim();const lo=Math.floor(e.time-4),hi=Math.ceil(leave(e)+6),t0=Date.now();$('anim-sub').textContent='Loop & overtake at '+(e.station_name||e.station)+' ('+e.station+'). Blocker times marked "expected" are estimates (scheduled time + current delay).';
+ animTimer=setInterval(()=>{const f=Math.min(1,(Date.now()-t0)/ms);drawAnim(e,lo+(hi-lo)*f);if(f>=1)stopAnim()},50)}
+function drawAnim(e,t){const s=$('anim');s.innerHTML='';const W=s.clientWidth||600,cx=W/2,main=70,loop=160,sw=Math.min(110,W*.18),k=Math.min(16,W/45),kb=Math.min(34,W/20);
+ el('text',{x:12,y:20,'font-size':12,'font-weight':700,fill:'#16202f'},(e.station_name||e.station)+' ('+e.station+')   '+mins(t),s);el('text',{x:12,y:36,'font-size':10.5,fill:'#6b7688'},'main line above, loop line below',s);
+ el('line',{x1:0,x2:W,y1:main,y2:main,stroke:'#9aa5b6','stroke-width':4},null,s);el('path',{d:'M'+(cx-sw)+','+main+' L'+(cx-sw+30)+','+loop+' L'+(cx+sw-30)+','+loop+' L'+(cx+sw)+','+main,fill:'none',stroke:'#7c4dff','stroke-width':4,opacity:.55},null,s);
+ el('text',{x:cx,y:loop+22,'text-anchor':'middle','font-size':10.5,fill:'#7c4dff'},'loop line',s);
+ const tl=leave(e),t0=e.time,lerp=(a,b,f)=>[a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f],A=[cx-sw,main],B=[cx-sw+30,loop],C=[cx,loop],D=[cx+sw-30,loop],E=[cx+sw,main];let p,st;
+ if(t<t0){p=[A[0]-(t0-t)*k,main];st='approaching the loop station'}else if(t<t0+1){p=lerp(A,B,t-t0);st='entering the loop'}else if(t<t0+3){p=lerp(B,C,(t-t0-1)/2);st='in the loop'}else if(t<tl){p=C;st='waiting in the loop'}else if(t<tl+2){p=lerp(C,D,(t-tl)/2);st='leaving the loop'}else if(t<tl+3){p=lerp(D,E,t-tl-2);st='back on the main line'}else{p=[E[0]+(t-tl-3)*k,main];st='continuing'}
+ const dot=(x,y,c,lab,sub)=>{if(x<-30||x>W+30)return;el('circle',{cx:x,cy:y,r:11,fill:c,stroke:'#fff','stroke-width':2},null,s);el('text',{x:x,y:y-17,'text-anchor':'middle','font-size':10.5,'font-weight':700,fill:c},lab,s);if(sub)el('text',{x:x,y:y+27,'text-anchor':'middle','font-size':9.5,fill:'#6b7688'},sub,s)};
+ dot(p[0],p[1],'#7c4dff','★ '+e.train+' (P'+e.priority+')',st);e.blockers.forEach(b=>{if(b.pass_time!=null)dot(cx+(t-b.pass_time)*kb,main,'#12a150','⚠ '+b.train+' (P'+b.priority+')',(t>=b.pass_time?'passed ':'due ')+(b.estimated?'~':'')+mins(b.pass_time)+(b.estimated?' (expected)':''))});
+ $('anim-log').innerHTML='<b>'+mins(e.time)+'</b> train '+e.train+' goes into the loop · '+e.blockers.map(b=>'<b>'+(b.pass_time!=null?(b.estimated?'~':'')+mins(b.pass_time):'?')+'</b> train '+b.train+' passes on the main line').join(' · ')+' · <b>'+mins(tl)+'</b> train '+e.train+' leaves the loop'}
+/* ---- honest side-by-side of the two models ---- */
+async function compareModels(){$('cmp').style.display='block';$('cmp-body').textContent='Running Graph PPO and Flat PPO on the same scenario (day '+['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][+$('wd').value]+', seed '+$('seed').value+')… this can take 1–2 minutes.';
+ try{const r=await api('/api/compare',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({start:tm($('start').value),end:tm($('end').value),seed:+$('seed').value,weekday:+$('wd').value,stress:$('stress').checked})});const S=r.summary,row=(n,m)=>'<tr><td><b>'+n+'</b></td><td>'+m.real_choices+'</td><td>'+m.hold+'</td><td>'+m.proceed+'</td><td>'+m.loop+'</td><td>'+m.added_delay+'</td><td>'+m.reward+'</td></tr>';
+ $('cmp-body').innerHTML='<table><thead><tr><th>Model</th><th>Real choices</th><th>HOLD</th><th>PROCEED</th><th>LOOP</th><th>Delay added (min)</th><th>Reward (closer to 0 is better)</th></tr></thead><tbody>'+row('Graph PPO',S.graph)+row('Flat PPO',S.flat)+'</tbody></table><p class="sub" style="margin-top:8px">Decisions where the two models chose differently at the same moment: <b>'+r.n_differing+'</b>. Nothing is adjusted: if the models make the same choices the numbers are identical, because the simulator is deterministic.</p>'
+ +(r.differing_decisions.length?'<div class="scroll" style="max-height:220px"><table><thead><tr><th>Time</th><th>Train</th><th>Graph PPO</th><th>Flat PPO</th></tr></thead><tbody>'+r.differing_decisions.map(d=>'<tr><td>'+mins(d.time)+'</td><td>'+d.train+'</td><td>'+esc(d.graph)+'</td><td>'+esc(d.flat)+'</td></tr>').join('')+'</tbody></table></div>':'')}catch(e){$('cmp-body').textContent='Error: '+e.message}}
+newRun();
+</script></body></html>
