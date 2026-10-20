@@ -1,7 +1,7 @@
 ,REAL,Graph PPO,Flat PPO
 Records compared,1517,,
-Average delay (min),34.68,18.14,18.17
-Avg |arrival difference to real| (min),-,21.78,21.79
-"Avg arrival difference to real (min, + = later than real)",-,-14.79,-14.77
+Average delay (min),34.68,15.2,18.2
+Avg |arrival difference to real| (min),-,21.16,18.78
+"Avg arrival difference to real (min, + = later than real)",-,-18.79,-15.77
 Decisions faced,-,482,485
-Records where Graph and Flat differ,-,44,
+Records where Graph and Flat differ,1001,979,
