@@ -60,7 +60,3 @@ Other steps of the pipeline (only needed if you change the data): `1_build_real_
 ## 5. summary of the results
 * On real days the models face very few decisions, so Graph PPO and Flat PPO behave almost identically. Real delays contain causes the simulator does not model (signals, crew), so the comparison with reality is context, **not proof of beating real dispatchers**.
 * Delay is only added by dispatching in the simulator, so it does not "recover" along the route the way real delay does.
-
-## Updated Graph PPO implementation (2026-10)
-
-See `GRAPH_PPO_UPDATED_IMPLEMENTATION.md` for the end-to-end trainable GraphSAGE update, reward correction, gradient smoke test, and fair Graph-vs-Flat retraining commands. **Retrain both policies from fresh initialization** before interpreting any performance comparison; the old checkpoints do not contain the new trainable encoder.
