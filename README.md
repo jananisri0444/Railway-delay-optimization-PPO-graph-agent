@@ -57,34 +57,9 @@ Other steps of the pipeline (only needed if you change the data): `1_build_real_
 * `B_Real_Data_Replay/compare_policies/` — all policies vs real, 7 days (2025-03-03 … 03-09), only trains that really ran.
 * `B_Real_Data_Replay/dashboard_and_table/` — REAL vs Graph PPO vs Flat PPO dashboards and tables (week 2025-03-03…09 and the day 2026-05-11).
 
-## 5. Honest summary of the results (say this in the viva)
-* Synthetic stress test, 21 scenarios, average reward (closer to 0 is better): Graph PPO −135.3, Flat PPO −139.6, priority rule −139.6, always proceed −145.6, always hold −164.4. Graph PPO has the best average, but the gap is **not statistically significant**.
-* On real days the models face very few decisions, so Graph PPO and Flat PPO behave almost identically. Real delays contain causes the simulator does not model (signals, weather, crew), so the comparison with reality is context, **not proof of beating real dispatchers**.
+## 5. summary of the results
+* On real days the models face very few decisions, so Graph PPO and Flat PPO behave almost identically. Real delays contain causes the simulator does not model (signals, crew), so the comparison with reality is context, **not proof of beating real dispatchers**.
 * Delay is only added by dispatching in the simulator, so it does not "recover" along the route the way real delay does.
-
-## 6. IMPORTANT data problem found
-`historical_reported_observations.csv` (and `historical_all_rows.csv`) had exactly **1,048,575 rows** = Excel's row limit. The file was cut off: only **79 of 125 trains** are in it (e.g. train 22652 has 10,577 of 32,690 rows; all 40xxx, 43xxx and 66xxx trains are missing — mostly low-priority passenger/MEMU trains). All real-data results here use that incomplete data.
-**Fix:** run `01_Data/2_Real_Railway_History/collect_railway_history.py` again (needs internet) and never open or save the CSV in Excel, then `check_history_completeness.py`, then `1_build_real_delay_data.py`, then `3_dashboard_and_table.py`. The two huge raw CSVs are not inside this zip (about 360 MB, and truncated); `1_build_real_delay_data.py` reads the file from `01_Data/2_Real_Railway_History/`.
-If you see `PermissionError` when running a script, close the CSV in Excel (or any program that has it open).
-
-## 7. New in this version
-**Train focus (live simulator dashboard).** Run `04_Run_Scripts/A_Live_Simulator_Dashboard/run_live_dashboard.py`, open http://127.0.0.1:5000, press Stress test and Play/Step. Then:
-* click any train in the decision table or the active-trains table (or use the "Train focus" drop-down);
-* you get **every decision that involved that train** (time, action, probabilities, why: who it blocks and what blocking vs holding costs), a **station-by-station journey** (scheduled vs simulated time, delay, "waited in loop here"), and a **loop & overtake animation** at the loop station (the waiting train goes into the loop line, the more important train passes on the main line, then it leaves).
-* Good demo scenarios where the Graph PPO really chooses loop & overtake: **Monday + seed 5** and **Friday + seed 0** (Stress test, 08:00–22:00); the trains with loop events appear first in the drop-down.
-* Forced decisions (only one possible action) are hidden by default; untick the box to see them.
-* The loop is modelled as: a one-off 1.5-minute cost for the waiting train and the conflict cleared for 10 minutes. The animation shows what that means at the station; it is not track-level signalling.
-
-**Why Graph PPO and Flat PPO match** — measured in `06_Viva_Material/Graph_vs_Flat_Diagnosis.md` with two scripts in `04_Run_Scripts/C_Evaluate_Models_Synthetic/`: `diagnose_graph_vs_flat.py` and `tune_rules_graph_headroom.py` (results: `05_Results/A_Synthetic_Testing/diagnosis_graph_vs_flat.csv`, `rule_sweep.json`).
-
-**Decision follower (no train to choose).** With the live dashboard running, open http://127.0.0.1:5000/follow (or click "Decision follower" at the top of the overall dashboard). Press Play: the page chooses the train for you.
-* **★ Train X = the train being decided by the PPO agent**, **⚠ Train Y = the trains that are blocked and wait for the outcome**, with the action, probabilities and the reason in plain words.
-* Loop & overtake decisions play an animation automatically (the waiting train goes into the loop line, the others pass, it leaves). Times for trains that have not passed yet are marked "expected".
-* A journey table (scheduled vs simulated time at each station) follows the train being decided, and a feed lists every decision (click one to replay it).
-* **Speed slider**: slow = about 7 seconds per decision. "show forced decisions" shows moves where only one action was possible.
-* In the overall dashboard's "Train focus" drop-down, trains being decided now are marked **★ DECIDING NOW** and blocked trains **⚠ blocked now**, and are listed first.
-* **"Compare Graph vs Flat on this scenario"** button: runs both models from scratch on the same day/seed and shows the real totals and the decisions where they differ. Nothing is adjusted. Example (Friday, seed 0, Stress test, 08:00–22:00): Flat PPO added 37.7 min of delay and Graph PPO 58.2 min — here the flat model was better; on the 21-scenario average the graph model was slightly better (−135.3 vs −139.6, not significant). Present both honestly.
-* Two models give identical numbers (even to the second) only when they make the same choices: the simulator is deterministic, so same scenario + same actions = same result.
 
 ## Updated Graph PPO implementation (2026-10)
 
